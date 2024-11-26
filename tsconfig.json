@@ -1,0 +1,50 @@
+{
+    "compilerOptions": {
+        /* Base Options */
+        "rootDir": "src",
+        "target": "esnext",
+        "esModuleInterop": true,
+        "allowJs": true,
+        "resolveJsonModule": true,
+        "moduleDetection": "force",
+        /* strictness */
+        "strict": true,
+        "verbatimModuleSyntax": true,
+        "forceConsistentCasingInFileNames": true,
+        "alwaysStrict": true,
+        /* bundler */
+        "moduleResolution": "Bundler",
+        "module": "ESNext",
+        "noEmit": true,
+        /* declaration */
+        "declaration": true,
+        "declarationDir": "typings",
+        "skipLibCheck": true,
+        /* performance */
+        "preserveConstEnums": true, // reduce memory footprint at runtime by emitting the enum value instead of a reference
+        "removeComments": true,
+        "stripInternal": true,
+        /* dev */
+        "sourceMap": true,
+        "inlineSources": false,
+        /* misc */
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "allowSyntheticDefaultImports": true,
+        "incremental": true,
+        /* plugins */
+        "importHelpers": true,
+        "paths": {
+            "tslib": ["./node_modules/tslib/tslib.d.ts"]
+        },
+        "lib": ["dom", "ESNext", "WebWorker", "ScriptHost"]
+    },
+    "exclude": ["**/node_modules/**", "typings", "dist", "test", "coverage"],
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "../waystone/src/glob/toAbsoluteGlob.ts"],
+    "ts-node": {
+        "compilerOptions": {
+            "module": "umd"
+        },
+        "transpileOnly": false
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "name": "typestar",
+    "version": "1.0.0",
+    "description": "Become the star of typescript with these essential types to boost your typescript coding!",
+    "types": "index.d.ts",
+    "keywords": [
+        "typescript",
+        "ts",
+        "types",
+        "utility",
+        "util",
+        "utilities"
+    ],
+    "author": "Torathion",
+    "homepage": "https://github.com/Torathion/typestar",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Torathion/typestar.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Torathion/typestar/issues"
+    },
+    "license": "MIT"
+}
