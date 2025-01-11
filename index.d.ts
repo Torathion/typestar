@@ -403,17 +403,17 @@ declare module 'typestar' {
      *
      *  @template T - The type of the value being resolved.
      */
-    export type Resolver<T> = (value?: T | PromiseLike<T>) => void
+    export type Resolver<T> = (value: T | PromiseLike<T>) => void
     /**
      *  A function that rejects a promise with a given reason.
      */
-    export type Rejector = (reason?: any) => void
+    export type Rejector = (reason?: Error) => void
     /**
-     *  Extracts the type of the rejected value from a promise.
+     *  General type of an ECMAScript Promise.
      *
-     *  @template T - The promise type.
+     *  @template T - The resolved value
      */
-    export type RejectedValue<T> = T extends PromiseLike<any> ? any : never
+    export type PromiseCallback<T> = (resolve: Resolver<T>, reject: Rejector) => void
     /**
      *  Extracts the resolved value type of a promise, including chained promises.
      *
@@ -426,13 +426,13 @@ declare module 'typestar' {
      *  @template TValue - The type of the resolved value.
      *  @template TResult - The type of the return value or the next promise in the chain.
      */
-    export type OnFulFilled<TValue, TResult = TValue> = ((value: TValue) => TResult | PromiseLike<TResult>) | null | undefined
+    export type OnFulfilled<TValue, TResult = TValue> = ((value: TValue) => TResult | PromiseLike<TResult>) | null | undefined
     /**
      *  Represents a handler function for a rejected promise, returning a value or another promise.
      *
      *  @template T - The type of the return value or the next promise in the chain.
      */
-    export type OnRejected<T = never> = ((reason: any) => T | PromiseLike<T>) | null | undefined
+    export type OnRejected<T = never> = ((reason: Error) => T | PromiseLike<T>) | null | undefined
     /*
      *			CLASS
      */
@@ -724,6 +724,10 @@ declare module 'typestar' {
      */
     export type JsonValue = JsonPrimitive | JsonObject | JsonArray
     /**
+     *  Type describing the source type of a JavaScript project.
+     */
+    export type SourceType = 'commonjs' | 'module' | 'script'
+    /**
      * Specifies subdirectories within the package.
      * Useful for organizational purposes or for tooling.
      */
@@ -807,7 +811,7 @@ declare module 'typestar' {
         /** The entry point for TypeScript type declarations. */
         types?: string
         /** Specifies whether the package uses ES modules or CommonJS. */
-        type: 'module' | 'commonjs'
+        type: SourceType
         /**
          * Indicates whether the package has side effects during tree-shaking.
          *
