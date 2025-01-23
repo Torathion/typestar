@@ -1,3 +1,14 @@
+## [1.2.0] 2025-1-23
+
+### Added
+
+-   `ElectronProcess` to use the type for environment check tools
+-   `PackageJsonPublishConfig` to extend `PackageJson` with extra publish configurations
+
+### Changed
+
+-   Adjusted the documentation of `Values` to be more clear.
+
 ## [1.1.0] 2025-1-11
 
 ### Added

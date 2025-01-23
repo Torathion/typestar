@@ -6,6 +6,12 @@
 
 Become the star of TypeScript with TypeStar! TypeStar is a vast collection of helpful and essential extra TypeScript types to leverage your TypeScript coding experience.
 
+This type library includes:
+
+-   A fully typed interface representing a `package.json` file
+-   A fully typed extension of `process` for electron that only includes the properties.
+-   A whole bunch of object and promise helper types.
+
 ---
 
 © Torathion 2024
