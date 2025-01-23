@@ -132,7 +132,7 @@ declare module 'typestar' {
      */
     export type IndexKey = string | symbol | number
     /**
-     *  Type specifying the value types of an object
+     *  Helper type extracting all types of an interface as a union.
      */
     export type Values<T extends AnyObject> = T[keyof T]
     /**
@@ -708,17 +708,14 @@ declare module 'typestar' {
      *  Represents a JSON object with string keys and values that are valid JSON types.
      */
     export type JsonObject = { [Key in string]?: JsonValue }
-
     /**
      *  Represents a JSON array where each element is a valid JSON value.
      */
     export type JsonArray = JsonValue[]
-
     /**
      *  Represents a JSON primitive value.
      */
     export type JsonPrimitive = string | number | boolean | null
-
     /**
      *  Represents any valid JSON value.
      */
@@ -776,6 +773,37 @@ declare module 'typestar' {
         /** The email address to report bugs to. */
         email?: string
     }
+
+    /**
+     *  Configuration options for publishing a package to a registry.
+     *  These settings are applied during the `npm publish` process.
+     */
+    export interface PackageJsonPublishConfig {
+        /**
+         *  The URL of the registry where the package should be published.
+         *  If not specified, the default npm registry (`https://registry.npmjs.org`) is used.
+         */
+        registry?: string
+        /**
+         *  The access level for the published package.
+         *  - `public`: The package is visible to everyone.
+         *  - `restricted`: The package is private and requires authentication to access.
+         */
+        access?: 'public' | 'restricted'
+        /**
+         *  The distribution tag for the published package.
+         *  Common tags include `latest`, `beta`, `alpha`, etc.
+         *
+         *  @default 'latest'
+         */
+        tag?: string
+        /**
+         *  Whether to enable provenance for the published package.
+         *  Provenance provides verifiable metadata about the package's origin and build process,
+         *  enhancing security and trust. This is used for CI purposes.
+         */
+        provenance?: boolean
+    }
     /**
      * Represents the structure of a `package.json` file in a javascript project.
      */
@@ -831,6 +859,8 @@ declare module 'typestar' {
         directories?: PackageJsonDirectories
         /** Information about the repository hosting the package's source code. */
         repository?: PackageJsonRepo
+        /** Information about how to publish the project. */
+        publishConfig?: PackageJsonPublishConfig
         /** A set of custom scripts defined for the package. */
         scripts?: Dict
         /** A configuration object for custom settings. */
@@ -846,8 +876,8 @@ declare module 'typestar' {
         /** A list of dependencies to include in the package bundle. */
         bundledDependencies?: string[]
         /**
-         * Resolutions for specific versions of dependencies in the dependency tree.
-         * Used to enforce or override specific dependency versions in monorepos or projects with nested dependencies.
+         *  Resolutions for specific versions of dependencies in the dependency tree.
+         *  Used to enforce or override specific dependency versions in monorepos or projects with nested dependencies.
          */
         resolutions?: Dict
         /** Specifies the versions of Node.js required to run the package. */
@@ -856,5 +886,96 @@ declare module 'typestar' {
         os?: string[]
         /** A list of CPU architectures supported by the package. */
         cpu?: string[]
+    }
+    /**
+     *  Extensions to the Node.js `process` object in Electron.
+     *  This interface only includes additional properties specific to Electron's main and renderer processes.
+     */
+    export interface ElectronProcess {
+        /**
+         *  When the app is started by being passed as a parameter to the default Electron executable,
+         *  this property is `true` in the main process, otherwise it is `undefined`.
+         */
+        defaultApp?: boolean
+        /**
+         *  A `boolean`, `true` when the current renderer context is the "main" renderer frame.
+         *  If you want the ID of the current frame, use `webFrame.routingId`.
+         */
+        isMainFrame?: boolean
+        /**
+         *  For Mac App Store build, this property is `true`, for other builds it is `undefined`.
+         */
+        mas?: boolean
+        /**
+         *  A `boolean` that controls ASAR support inside your application.
+         *  Setting this to `true` will disable the support for `asar` archives in Node's built-in modules.
+         */
+        noAsar?: boolean
+        /**
+         *  A `boolean` that controls whether deprecation warnings are printed to `stderr`.
+         *  Setting this to `true` will silence deprecation warnings.
+         */
+        noDeprecation?: boolean
+        /**
+         * A `string` representing the path to the resources directory.
+         */
+        resourcesPath?: string
+        /**
+         *  When the renderer process is sandboxed, this property is `true`, otherwise it is `undefined`.
+         */
+        sandboxed?: boolean
+        /**
+         *  A `boolean` that indicates whether the current renderer context has `contextIsolation` enabled.
+         *  It is `undefined` in the main process.
+         */
+        contextIsolated?: boolean
+        /**
+         *  A `boolean` that controls whether deprecation warnings will be thrown as exceptions.
+         *  Setting this to `true` will throw errors for deprecations.
+         */
+        throwDeprecation?: boolean
+        /**
+         *  A `boolean` that controls whether deprecations printed to `stderr` include their stack trace.
+         *  Setting this to `true` will print stack traces for deprecations.
+         */
+        traceDeprecation?: boolean
+        /**
+         *  A `boolean` that controls whether process warnings printed to `stderr` include their stack trace.
+         *  Setting this to `true` will print stack traces for process warnings (including deprecations).
+         */
+        traceProcessWarnings?: boolean
+        /**
+         *  A `string` representing the current process's type. Possible values:
+         *  - `browser` - The main process
+         *  - `renderer` - A renderer process
+         *  - `worker` - In a web worker
+         *  - `utility` - In a node process launched as a service
+         */
+        type?: 'browser' | 'renderer' | 'worker' | 'utility'
+        /**
+         *  An object containing version strings for Electron and Chrome.
+         */
+        versions: {
+            /**
+             *  A `string` representing Chrome's version string.
+             */
+            chrome: string
+            /**
+             *  A `string` representing Electron's version string.
+             */
+            electron: string
+        }
+        /**
+         *  If the app is running as a Windows Store app (appx), this property is `true`,
+         *  otherwise it is `undefined`.
+         */
+        windowsStore?: boolean
+        /**
+         *  A `string` (optional) representing a globally unique ID of the current JavaScript context.
+         *  Each frame has its own JavaScript context. When contextIsolation is enabled, the isolated
+         *  world also has a separate JavaScript context.
+         *  This property is only available in the renderer process.
+         */
+        contextId?: string
     }
 }
