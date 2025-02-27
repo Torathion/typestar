@@ -10,8 +10,6 @@
 -   Reduced type definitions to use `Table<T>`
 -   Extended `exports` of `PackageJson` with `PackageJsonExportsEntry` to uniform projects supporting both ESM and CJS builds.
 
-### Changed
-
 ## [1.2.0] 01-23-2025
 
 ### Added
