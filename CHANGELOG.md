@@ -1,4 +1,18 @@
-## [1.2.0] 2025-1-23
+## [1.3.0] 02-27-2025
+
+### Added
+
+-   `Table<T>` to reduce type duplication of `Record<string, T>`
+-   `AnyArray` to allow algorithms and function to utilize any kind of array structure.
+
+### Changed
+
+-   Reduced type definitions to use `Table<T>`
+-   Extended `exports` of `PackageJson` with `PackageJsonExportsEntry` to uniform projects supporting both ESM and CJS builds.
+
+### Changed
+
+## [1.2.0] 01-23-2025
 
 ### Added
 
@@ -9,7 +23,7 @@
 
 -   Adjusted the documentation of `Values` to be more clear.
 
-## [1.1.0] 2025-1-11
+## [1.1.0] 01-11-2025
 
 ### Added
 

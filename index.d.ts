@@ -80,7 +80,7 @@ declare module 'typestar' {
     /**
      *  Swaps keys and values of an object type.
      */
-    export type Invert<T extends Record<string, string | number>> = {
+    export type Invert<T extends Table<string | number>> = {
         [P in keyof T as `${T[P]}`]: P
     }
     /**
@@ -128,6 +128,10 @@ declare module 'typestar' {
      */
     export type AnyObject = Record<any, any>
     /**
+     *  Type describing a lookup table like structure.
+     */
+    export type Table<T> = Record<string, T>
+    /**
      * 	Type describing any type that can be used as an index key of an object.
      */
     export type IndexKey = string | symbol | number
@@ -146,7 +150,7 @@ declare module 'typestar' {
     /**
      * 	Type describing a dictionary data structure like object.
      */
-    export type Dict = Record<string, string>
+    export type Dict = Table<string>
     /**
      *   Helper type that cleans up a lot of object types.
      */
@@ -265,6 +269,10 @@ declare module 'typestar' {
      * 	Type describing any bigint typed array
      */
     export type BigTypedArray = BigInt64Array | BigUint64Array
+    /**
+     *  Type describing any kind of array like structure for algorithms allowing any kind of array to be able to perform certain actions.
+     */
+    export type AnyArray = TypedArray | BigTypedArray | unknown[] | ArrayLike<unknown>
     /**
      * Represents various ArrayBuffer views including typed arrays and DataView.
      */
@@ -507,7 +515,7 @@ declare module 'typestar' {
      * Represents a dictionary of properties where keys are strings
      * and values conform to the `ElementValue` type.
      */
-    export type Props = Record<string, ElementValue>
+    export type Props = Table<ElementValue>
     /**
      * Represents all valid SVG elements used for rendering.
      */
@@ -805,6 +813,18 @@ declare module 'typestar' {
         provenance?: boolean
     }
     /**
+     * Represents an exports entry to define fine grained exports for ESM and CJS type projects.
+     */
+    export interface PackageJsonExportsEntry {
+        /** Types used for both CJS and ESM imports. */
+        types: string
+        /** Path to the file used for ESM projects. */
+        import: string
+        /** Path to the file used for CJS projects. */
+        require: string
+    }
+
+    /**
      * Represents the structure of a `package.json` file in a javascript project.
      */
     export interface PackageJson {
@@ -849,7 +869,7 @@ declare module 'typestar' {
          */
         sideEffects?: boolean | string[]
         /** A map of module export paths to their corresponding files. */
-        exports: Dict
+        exports: Table<PackageJsonExportsEntry>
         /** Specifies the package manager and version used to install dependencies for the project. */
         packageManager?: string
         /**

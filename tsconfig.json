@@ -32,15 +32,10 @@
         "emitDecoratorMetadata": true,
         "allowSyntheticDefaultImports": true,
         "incremental": true,
-        /* plugins */
-        "importHelpers": true,
-        "paths": {
-            "tslib": ["./node_modules/tslib/tslib.d.ts"]
-        },
         "lib": ["dom", "ESNext", "WebWorker", "ScriptHost"]
     },
     "exclude": ["**/node_modules/**", "typings", "dist", "test", "coverage"],
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "../waystone/src/glob/toAbsoluteGlob.ts"],
+    "include": ["src/**/*.ts", "src/**/*.d.ts"],
     "ts-node": {
         "compilerOptions": {
             "module": "umd"
