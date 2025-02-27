@@ -15,7 +15,7 @@
     "homepage": "https://github.com/Torathion/typestar",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Torathion/typestar.git"
+        "url": "git+https://github.com/Torathion/typestar.git"
     },
     "bugs": {
         "url": "https://github.com/Torathion/typestar/issues"
