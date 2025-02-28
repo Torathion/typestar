@@ -272,7 +272,11 @@ declare module 'typestar' {
     /**
      *  Type describing any kind of array like structure for algorithms allowing any kind of array to be able to perform certain actions.
      */
-    export type AnyArray = TypedArray | BigTypedArray | unknown[] | ArrayLike<unknown>
+    export type AnyArray<T> = T[] | TypedArray | BigTypedArray
+    /**
+     *  Type describing an arbitrary array holding numbers.
+     */
+    export type AnyNumberArray = TypedArray | ArrayBuffer | number[]
     /**
      * Represents various ArrayBuffer views including typed arrays and DataView.
      */
@@ -468,11 +472,15 @@ declare module 'typestar' {
      */
     export type AnyConstructor = new (...args: any[]) => any
     /**
+     * Represents a constructor of a specific Instantiable `T` with any arguments.
+     */
+    export type Constructor<T> = new (...args: any[]) => T
+    /**
      *  Extracts the argument types of a constructor.
      */
     export type ConstructorArgs<T> = T extends new (...args: infer A) => any ? A : never
     /**
-     *  Represents a constructor for a specific class or type.
+     *  Represents a constructor for a specific class or type with specific arguments.
      *
      *  @template T - The class or type the constructor creates.
      */

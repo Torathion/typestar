@@ -1,3 +1,14 @@
+## [1.4.0] 02-28-2025
+
+### Added
+
+-   `AnyNumberArray` to generalize types for algorithms that work with numbers inside array structures.
+-   `Constructor<T>` a more leaner and generalized type compared to `ClassConstructor<T>` that can hold any arguments.
+
+### Changed
+
+-   Fixed type errors in `AnyArray` and added a generic to provide more detailed type definitions.
+
 ## [1.3.0] 02-27-2025
 
 ### Added

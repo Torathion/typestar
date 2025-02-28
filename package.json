@@ -1,6 +1,6 @@
 {
     "name": "typestar",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "description": "Become the star of typescript with these essential types to boost your typescript coding!",
     "types": "index.d.ts",
     "keywords": [
