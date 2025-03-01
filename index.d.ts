@@ -280,7 +280,19 @@ declare module 'typestar' {
     /**
      *  Type describing any argument that can be used to instantiate a TypedArray.
      */
-    export type TypedArrayArgs = AnyNumberArray | ArrayBuffer | number
+    export type TypedArrayArgs = TypedArray | ArrayBuffer | MaybeArray<number>
+    /**
+     *  Stricter type variant of `TypedArrayArgs` that forbids instantiating a new TypedArray from another kind, like `Uint8Array` -> `Float64Array`.
+     */
+    export type StrictTypedArrayArgs<T> = T | ArrayBuffer | MaybeArray<number>
+    /**
+     *  Fixed TypedArray constructor supporting every argument without type errors caused by TypeScript's overload limitation.
+     */
+    export type TypedArrayConstructor<T extends TypedArray> = new (
+        buffer?: ArrayBuffer | TypedArray | number[] | number,
+        byteOffset?: number,
+        length?: number
+    ) => T
     /**
      * Represents various ArrayBuffer views including typed arrays and DataView.
      */
@@ -288,20 +300,7 @@ declare module 'typestar' {
     /**
      * Represents constructors for ArrayBuffer-related views.
      */
-    export type ViewConstructor = ArrayBufferConstructor | DataViewConstructor | TypedArrayConstructor
-    /**
-     * Represents constructors for all typed arrays in JavaScript.
-     */
-    export type TypedArrayConstructor =
-        | Float32ArrayConstructor
-        | Float64ArrayConstructor
-        | Int8ArrayConstructor
-        | Int16ArrayConstructor
-        | Int32ArrayConstructor
-        | Uint8ArrayConstructor
-        | Uint8ClampedArrayConstructor
-        | Uint16ArrayConstructor
-        | Uint32ArrayConstructor
+    export type ViewConstructor = ArrayBufferConstructor | DataViewConstructor | TypedArrayConstructor<any>
     /**
      * 	Type describing the possibility of an value being an array or not.
      */

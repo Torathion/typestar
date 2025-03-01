@@ -1,3 +1,19 @@
+## [1.6.0] 03-01-2025
+
+### Added
+
+-   `StrictTypedArray<T>` as a stricter variant of `TypedArrayArgs` to specify the exact `TypedArray` used and needed inside the scope.
+
+### Changed
+
+-   Optimized typings of `TypedArrayArgs`
+-   Replaced the categorical type of `TypedArrayConstructor` with a new actual constructor that fixes TypeScript's limitation of detecting errors from overload type definitions. To "fix" the `TypedArray` constructors, add aliases for the existing, native ones:
+
+```typescript
+export const F64: TypedArrayConstructor<Float64Array> = Float64Array
+// ...
+```
+
 ## [1.5.0] 03-01-2025
 
 ### Added
