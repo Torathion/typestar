@@ -276,7 +276,11 @@ declare module 'typestar' {
     /**
      *  Type describing an arbitrary array holding numbers.
      */
-    export type AnyNumberArray = TypedArray | ArrayBuffer | number[]
+    export type AnyNumberArray = TypedArray | number[]
+    /**
+     *  Type describing any argument that can be used to instantiate a TypedArray.
+     */
+    export type TypedArrayArgs = AnyNumberArray | ArrayBuffer | number
     /**
      * Represents various ArrayBuffer views including typed arrays and DataView.
      */

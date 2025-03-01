@@ -1,3 +1,13 @@
+## [1.5.0] 03-01-2025
+
+### Added
+
+-   `TypedArrayArgs` to describe any kind of argument used to instantiate a `TypedArray`.
+
+### Removed
+
+-   `ArrayBuffer` from `AnyNumberArray` as it caused type errors when trying to call array only properties like `length`.
+
 ## [1.4.0] 02-28-2025
 
 ### Added
