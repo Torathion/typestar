@@ -286,6 +286,10 @@ declare module 'typestar' {
      */
     export type StrictTypedArrayArgs<T> = T | ArrayBuffer | MaybeArray<number>
     /**
+     *  Utility type that wraps other array types to include `readonly` arrays.
+     */
+    export type WithReadonly<T> = T extends (infer U)[] ? T | readonly U[] : T
+    /**
      *  Fixed TypedArray constructor supporting every argument without type errors caused by TypeScript's overload limitation.
      */
     export type TypedArrayConstructor<T extends TypedArray> = new (

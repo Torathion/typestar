@@ -1,3 +1,9 @@
+## [1.9.0] 03-09-2025
+
+### Added
+
+-   Utility type `WithReadonly<T>` that wraps around other array types to include `readonly` arrays.
+
 ## [1.7.0] 03-09-2025
 
 ### Changed
