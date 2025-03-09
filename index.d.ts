@@ -289,7 +289,7 @@ declare module 'typestar' {
      *  Fixed TypedArray constructor supporting every argument without type errors caused by TypeScript's overload limitation.
      */
     export type TypedArrayConstructor<T extends TypedArray> = new (
-        buffer?: ArrayBuffer | TypedArray | number[] | number,
+        buffer?: ArrayBuffer | TypedArray | MaybeArray<number>,
         byteOffset?: number,
         length?: number
     ) => T
@@ -479,15 +479,11 @@ declare module 'typestar' {
      */
     export type Constructor<T> = new (...args: any[]) => T
     /**
-     *  Extracts the argument types of a constructor.
-     */
-    export type ConstructorArgs<T> = T extends new (...args: infer A) => any ? A : never
-    /**
      *  Represents a constructor for a specific class or type with specific arguments.
      *
      *  @template T - The class or type the constructor creates.
      */
-    export type ClassConstructor<T> = new (...args: ConstructorArgs<T>) => T
+    export type ClassConstructor<T, A extends any[] = any[]> = new (...args: A) => T
     /**
      *  Extracts the return type of a constructor of a class `T`.
      */

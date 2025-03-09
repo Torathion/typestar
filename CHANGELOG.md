@@ -1,3 +1,13 @@
+## [1.7.0] 03-09-2025
+
+### Changed
+
+-   Loosened `ClassConstructor` and gave additional generic `A` to define the constructor arguments. This should solve all errors when wrapping constructor. I don't think it's possible to automatically extract the correct arguments from a constructor by how limited TypeScript is.
+
+### Removed
+
+-   Removed `ConstructorArgs<T>` as the builtin type `ConstructorParameters<T>` exist.
+
 ## [1.6.0] 03-01-2025
 
 ### Added
