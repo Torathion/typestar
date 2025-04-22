@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.9.1] 04-22-2025
+
+### Changed
+
+-   Adjusted parameter type of `OnResolved` to fix type misalignment error to `promise.then()`.
+
 ## [1.9.0] 04-22-2025
 
 ### Changed

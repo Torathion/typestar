@@ -445,7 +445,7 @@ declare module 'typestar' {
      *  @template TValue - The type of the resolved value.
      *  @template TResult - The type of the return value or the next promise in the chain.
      */
-    export type OnResolved<TValue, TResult = TValue> = Nullish<(value?: TValue) => TResult | PromiseLike<TResult>>
+    export type OnResolved<TValue, TResult = TValue> = Nullish<(value: TValue) => TResult | PromiseLike<TResult>>
     /**
      *  Represents a handler function for a rejected promise, returning a value or another promise.
      *
