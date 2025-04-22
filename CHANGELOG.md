@@ -1,4 +1,18 @@
-## [1.9.0] 03-09-2025
+# Changelog
+
+## [1.9.0] 04-22-2025
+
+### Changed
+
+-   Fixed `Rejector` and `reject` misalignment by not accepting `PromiseLike<Error>`
+-   Adjusted `OnRejected` callback type to reflect changes of `Rejector`
+-   Renamed `OnFulfilled` to `OnResolved`
+
+### Misc
+
+-   Added updated issue templates to project
+
+## [1.8.0] 03-09-2025
 
 ### Added
 

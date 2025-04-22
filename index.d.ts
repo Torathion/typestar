@@ -426,7 +426,7 @@ declare module 'typestar' {
     /**
      *  A function that rejects a promise with a given reason.
      */
-    export type Rejector = (reason?: Error) => void
+    export type Rejector = (reason?: Error | PromiseLike<Error>) => void
     /**
      *  General type of an ECMAScript Promise.
      *
@@ -440,18 +440,18 @@ declare module 'typestar' {
      */
     export type ResolvedValue<T> = T extends PromiseLike<infer U> ? U | T : never
     /**
-     *  Represents a handler function for a fulfilled promise, returning a value or another promise.
+     *  Represents a handler function for a resolved promise, returning a value or another promise.
      *
      *  @template TValue - The type of the resolved value.
      *  @template TResult - The type of the return value or the next promise in the chain.
      */
-    export type OnFulfilled<TValue, TResult = TValue> = ((value: TValue) => TResult | PromiseLike<TResult>) | null | undefined
+    export type OnResolved<TValue, TResult = TValue> = Nullish<(value?: TValue) => TResult | PromiseLike<TResult>>
     /**
      *  Represents a handler function for a rejected promise, returning a value or another promise.
      *
      *  @template T - The type of the return value or the next promise in the chain.
      */
-    export type OnRejected<T = never> = ((reason: Error) => T | PromiseLike<T>) | null | undefined
+    export type OnRejected<T = never> = Nullish<(reason?: Error | PromiseLike<Error>) => T | PromiseLike<T>>
     /*
      *			CLASS
      */
