@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.10.0] 04-26-2025
+
+### Added
+
+-   Add type patches for modular styles, glsl files and user agent of `navigator`.
+
 ## [1.9.1] 04-22-2025
 
 ### Changed
