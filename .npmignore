@@ -4,4 +4,4 @@
 !index.d.ts
 !README.md
 !LICENSE.md
-!patches
+!patches/*.d.ts

@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.10.1] 04-26-2025
+
+### Changed
+
+-   Fixed `.npmignore` to include all type patch files correctly
+
 ## [1.10.0] 04-26-2025
 
 ### Added
