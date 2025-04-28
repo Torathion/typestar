@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0] 04-28-2025
+
+### Added
+
+-   Type `ArrayToIntersect<T>` to convert an array of different elements to an intersection (&).
+-   Type `ArrayToUnion<T>` to convert an array of different elements to an union (|).
+
 ## [1.10.1] 04-26-2025
 
 ### Changed

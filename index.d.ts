@@ -28,11 +28,19 @@ declare module 'typestar' {
      */
     export type OmitStrict<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
     /**
-     *  Converts a union of types to an intersection.
+     *  Converts a union (|) of types to an intersection (&).
      *
      *  Useful for merging multiple types into one.
      */
     export type IntersectUnion<U> = (U extends any ? (x: U) => any : never) extends (x: infer I) => any ? I : never
+    /**
+     *  Converts the types of an array of elements to an intersection (&).
+     */
+    export type ArrayToIntersect<T extends unknown[]> = IntersectUnion<T[number]>
+    /**
+     *  Converts the types of an array of elements to an union (|).
+     */
+    export type ArrayToUnion<T extends unknown[]> = T[number]
     /**
      *  Creates a union of a literal type (L) and a broader base type (B).
      *
