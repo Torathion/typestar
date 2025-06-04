@@ -168,9 +168,7 @@ declare module 'typestar' {
     /**
      * 	Type that marks every property, even deep ones, as partial.
      */
-    export type DeepPartial<T> = {
-        [P in keyof T]?: T[P] extends AnyObject ? DeepPartial<T[P]> : T[P]
-    }
+    export type DeepPartial<T> = T extends any ? (T extends any[] ? T : T extends object ? { [P in keyof T]?: DeepPartial<T[P]> } : T) : never
     /**
      *  Recursively makes all properties of an object type readonly.
      *
@@ -354,6 +352,10 @@ declare module 'typestar' {
      *  Type describing an arbitrary function.
      */
     export type AnyFunction = (...args: any[]) => any
+    /**
+     *  Type describing an argument that can easy be a static value or the result of a dynamically calculated function.
+     */
+    export type MaybeFunction<T> = T | (() => T)
     /**
      *  Type describing a function with arbitrary arguments but with a defined result type.
      */

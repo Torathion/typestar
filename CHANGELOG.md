@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.12.0] 06-04-2025
+
+### Added
+
+-   Type `MaybeFunction<T>` as function argument to describe types that can be both static and dynamic.
+
+### Fixed
+
+-   Type `DeepPartial<T>` is more accurate of turning nested objects into partials.
+
 ## [1.11.0] 04-28-2025
 
 ### Added
