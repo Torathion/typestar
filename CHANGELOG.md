@@ -1,5 +1,44 @@
 # Changelog
 
+## [2.0.0] 06-06-2025
+
+### BREAKING
+
+#### Renames
+
+-   `RequireAtLeastOne` -> `Require`
+-   `ExcludeIndexSignature` -> `NotIndexable`
+-   `HasToString` -> `Stringifyable`
+-   `AnyFunction` -> `AnyFn`
+-   `MaybeFunction` -> `MaybeFn`
+-   `TypedResultFunction` -> `TypedFn`
+-   `HomogenousFunction` -> `LinearMapperFn`
+-   `HeterogenousFunction` -> `MapperFn`
+-   `AsyncFunction` -> `AsyncFn`
+-   `TypedAsyncFunction` -> `AsyncFn<T>`
+-   `SimpleVoidFunction` -> `VoidFn`
+-   `AnyVoidFunction` -> `VoidFn`
+-   `TypedVoidFunction` -> `VoidFn<T>`
+-   `TimeoutFunction` -> `TimeoutFn`
+-   `ClearTimeoutFunction` -> `ClearTimeoutFn`
+-   `MethodDecorator` -> `Decorator`
+-   `SingleNumberMap` -> `SingleMap<number>`
+-   `DoubleNumberMap` -> `DoubleMap<number>`
+-   `SVGAttribute` -> `SVGAttr`
+
+#### Removed
+
+-   `AnyObject` in favor of `object` (just deactivate the corresponding ESLint Rule)
+-   `CartesianProduct` for being too niche.
+
+### Added
+
+-   `Jsonfyable<T>` to define objects that can be safely converted to a JSON string.
+
+### Fixed
+
+-   Incorrect function to check of `HasValue<T>`
+
 ## [1.12.0] 06-04-2025
 
 ### Added
