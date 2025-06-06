@@ -345,10 +345,6 @@ declare module 'typestar' {
             ? [[H1, H2], ...Zip<R1, R2>]
             : []
         : []
-    /**
-     *  Computes the Cartesian product of two union types.
-     */
-    export type CartesianProduct<U1, U2> = U1 extends any ? (U2 extends any ? [U1, U2] : never) : never
     /*
      *			FUNCTION
      */
