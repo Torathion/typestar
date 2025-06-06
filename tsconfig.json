@@ -35,7 +35,7 @@
         "lib": ["dom", "ESNext", "WebWorker", "ScriptHost"]
     },
     "exclude": ["**/node_modules/**", "typings", "dist", "test", "coverage"],
-    "include": ["patches/**/*.d.ts", "index.d.ts"],
+    "include": ["patches/**/*.d.ts", "./index.d.ts"],
     "ts-node": {
         "compilerOptions": {
             "module": "umd"
