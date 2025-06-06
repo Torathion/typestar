@@ -14,10 +14,11 @@ Become the star of TypeScript with TypeStar! TypeStar is a vast collection of he
 
 This type library includes:
 
+-   A lot of types of Element and SVG handling
 -   A fully typed interface representing a `package.json` file
 -   A fully typed extension of `process` for electron that only includes the properties.
 -   A whole bunch of object and promise helper types.
 
 ---
 
-© Torathion 2024
+© Torathion 2025
