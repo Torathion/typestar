@@ -1,7 +1,7 @@
 {
     "name": "typestar",
     "version": "1.12.0",
-    "description": "Become the star of typescript with these essential types to boost your typescript coding!",
+    "description": "Type library to reduce unreadable and long type definitions",
     "types": "index.d.ts",
     "keywords": [
         "typescript",

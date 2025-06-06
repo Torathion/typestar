@@ -74,9 +74,9 @@ declare module 'typestar' {
         [P in keyof T]: string
     }
     /**
-     *  Requires at least one key in `Keys` to be present in `T`.
+     *  Helper type describing a given object with given keys to be present.
      */
-    export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Partial<T> & { [K in Keys]-?: Pick<T, K> }[Keys]
+    export type Required<T, Keys extends keyof T = keyof T> = Partial<T> & { [K in Keys]-?: Pick<T, K> }[Keys]
     /**
      *  Converts a tuple type to a union of its element types.
      */
@@ -115,7 +115,7 @@ declare module 'typestar' {
      *
      *  @template T - The type to filter.
      */
-    export type ExcludeIndexSignature<T> = {
+    export type NotIndexable<T> = {
         [P in keyof T as string extends P ? never : number extends P ? never : P]: T[P]
     }
     /**
@@ -247,14 +247,18 @@ declare module 'typestar' {
         [K in keyof T]: T[K] extends V ? K : never
     }[keyof T]
     /**
-     *  Extends a type to ensure it includes a `toString` method that is used for internal string conversion.
+     *  Helper type describing an object that can be safely converted to a JSON string.
      */
-    export type HasToString<T> = T & { toString: (...args: any[]) => string }
+    export type Jsonfyable<T> = T & { toJSON: (...args: any[]) => string }
+    /**
+     *  Helper type describing an object that can be safely stringified.
+     */
+    export type Stringifyable<T> = T & { toString: (...args: any[]) => string }
 
     /**
      * Extends a type to ensure it includes a `valueOf` method that is often used for internal javascript processes.
      */
-    export type HasValue<T> = T & { value: (...args: any[]) => number }
+    export type HasValue<T> = T & { valueOf: (...args: any[]) => number }
     /*
      *			ARRAY
      */
@@ -351,43 +355,31 @@ declare module 'typestar' {
     /**
      *  Type describing an arbitrary function.
      */
-    export type AnyFunction = (...args: any[]) => any
+    export type AnyFn = (...args: any[]) => any
     /**
      *  Type describing an argument that can easy be a static value or the result of a dynamically calculated function.
      */
-    export type MaybeFunction<T> = T | (() => T)
+    export type MaybeFn<T> = T | (() => T)
     /**
      *  Type describing a function with arbitrary arguments but with a defined result type.
      */
-    export type TypedResultFunction<T> = (...args: any[]) => T
+    export type TypedFn<T> = (...args: any[]) => T
     /**
      * 	Type describing a function with arbitrary arguments and result of the same defined type.
      */
-    export type HomogenousFunction<T> = (...args: T[]) => T
+    export type LinearMapperFn<T> = (...args: T[]) => T
     /**
      * 	Type describing a function with arbitrary arguments of one type and a result of another type.
      */
-    export type HeterogenousFunction<A, R> = (...args: A[]) => R
+    export type MapperFn<R, A = any> = (...args: A[]) => R
     /**
      * 	Type describing a function that runs asynchronously.
      */
-    export type AsyncFunction = (...args: any[]) => Promise<unknown>
-    /**
-     *  Type describing a function that runs asynchronously with arbitrary arguments and with a typed return value.
-     */
-    export type TypedAsyncFunction<T> = (...args: any[]) => Promise<T>
+    export type AsyncFn<R = unknown, A = any> = (...args: A[]) => Promise<R>
     /**
      *  Type describing a function with no return value an no arguments.
      */
-    export type SimpleVoidFunction = () => void
-    /**
-     *  Type describing a function with arbitrary arguments, but with no return value.
-     */
-    export type AnyVoidFunction = (...args: any[]) => void
-    /**
-     *  Type describing a function with arbitrary typed arguments, but with not return value.
-     */
-    export type TypedVoidFunction<T> = (...args: T[]) => void
+    export type VoidFn<T = any> = (...args: any[]) => T
     /**
      *  Type specifying the arguments of a function.
      */
@@ -395,15 +387,15 @@ declare module 'typestar' {
     /**
      *  Type describing the function inside a `setTimeout` function.
      */
-    export type TimeoutFunction = (handler: TimerHandler, timeout?: number | undefined, ...args: any[]) => number
+    export type TimeoutFn = (handler: TimerHandler, timeout?: number | undefined, ...args: any[]) => number
     /**
      *  Type describing a function that clears a timeout.
      */
-    export type ClearTimeoutFunction = (timeoutId: string | number | Timeout | undefined) => void
+    export type ClearTimeoutFn = (timeoutId: string | number | Timeout | undefined) => void
     /**
      *  Type describing the function inside a `setInterval` function.
      */
-    export type IntervalFunction = (handler: TimerHandler, timeout?: number, ...args: any[]) => number
+    export type IntervalFn = (handler: TimerHandler, timeout?: number, ...args: any[]) => number
     /**
      *   Type describing a variable to store a timeout inside. (i.e. the timeout id.)
      */
@@ -415,15 +407,15 @@ declare module 'typestar' {
     /**
      *  Type describing a function that acts as a decorator to a class method.
      */
-    export type MethodDecorator = (target: unknown, propertyKey: string, descriptor: PropertyDescriptor) => void
+    export type Decorator = (target: unknown, propertyKey: string, descriptor: PropertyDescriptor) => void
     /**
-     *  Represents a function that maps a single number to another number.
+     *  Represents a function that maps a single argument to another value.
      */
-    export type SingleNumberMap = (x: number) => number
+    export type SingleMap<T> = (x: T) => T
     /**
-     *  Represents a function that maps two numbers to another number.
+     *  Represents a function that maps two arguments to a value.
      */
-    export type DoubleNumberMap = (x: number, y: number) => number
+    export type DoubleMap = (x: T, y: T) => T
     /*
      *			PROMISE
      */
@@ -531,7 +523,7 @@ declare module 'typestar' {
     /**
      * Represents an attribute value for an SVG element, which can be a string, number, or null.
      */
-    export type SVGAttribute = null | number | string
+    export type SVGAttr = null | number | string
     /**
      * Represents a dictionary of properties where keys are strings
      * and values conform to the `ElementValue` type.
