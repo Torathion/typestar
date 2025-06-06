@@ -132,10 +132,6 @@ declare module 'typestar' {
      *			OBJECTS
      */
     /**
-     * 	Type describing any object. The sole purpose of this type is to get rid of type "any" warnings.
-     */
-    export type AnyObject = Record<any, any>
-    /**
      *  Type describing a lookup table like structure.
      */
     export type Table<T> = Record<string, T>
@@ -146,15 +142,15 @@ declare module 'typestar' {
     /**
      *  Helper type extracting all types of an interface as a union.
      */
-    export type Values<T extends AnyObject> = T[keyof T]
+    export type Values<T extends object> = T[keyof T]
     /**
      * 	Type specifying an entry from `Object.property.entries`.
      */
-    export type Entry<T extends AnyObject> = [keyof T, Values<T>]
+    export type Entry<T extends object> = [keyof T, Values<T>]
     /**
      * 	Type specifying all entries from `Object.property.entries`
      */
-    export type Entries<T extends AnyObject> = Entry<T>[]
+    export type Entries<T extends object> = Entry<T>[]
     /**
      * 	Type describing a dictionary data structure like object.
      */
