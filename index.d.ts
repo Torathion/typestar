@@ -411,7 +411,7 @@ declare module 'typestar' {
     /**
      *  Represents a function that maps two arguments to a value.
      */
-    export type DoubleMap = (x: T, y: T) => T
+    export type DoubleMap<T> = (x: T, y: T) => T
     /*
      *			PROMISE
      */
