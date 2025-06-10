@@ -136,6 +136,10 @@ declare module 'typestar' {
      */
     export type Table<T> = Record<string, T>
     /**
+     *  Type describing any object that can be typed. Used for generic object algorithms.
+     */
+    export type Obj<K = any, V = any> = Record<K, V>
+    /**
      * 	Type describing any type that can be used as an index key of an object.
      */
     export type IndexKey = string | symbol | number
