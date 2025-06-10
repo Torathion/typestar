@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.1.0] 06-10-2025
+
+### Added
+
+-   Inverted change of removing `AnyObject`, now featuring a more configurable version called `Obj`
+
 ## [2.0.0] 06-06-2025
 
 ### BREAKING
