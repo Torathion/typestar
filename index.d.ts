@@ -132,6 +132,12 @@ declare module 'typestar' {
         [K in keyof T]: T[K]
     }
     /**
+     *  Helper type turning every prop of an object to be `Nullish`.
+     */
+    export type Nullable<T extends Obj> = {
+        [K in keyof T]: Nullish<T[K]>
+    }
+    /**
      * 	Type that marks every property, even deep ones, as partial.
      */
     export type DeepPartial<T> = T extends any ? (T extends any[] ? T : T extends object ? { [P in keyof T]?: DeepPartial<T[P]> } : T) : never
