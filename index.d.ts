@@ -351,31 +351,23 @@ declare module 'typestar' {
     /**
      *  Type describing an arbitrary function.
      */
-    export type Fn = (...args: any[]) => any
+    export type Fn<T = any> = (...args: any[]) => T
     /**
      *  Type describing an argument that can easy be a static value or the result of a dynamically calculated function.
      */
     export type MaybeFn<T> = T | (() => T)
     /**
-     *  Type describing a function with arbitrary arguments but with a defined result type.
-     */
-    export type TypedFn<T> = (...args: any[]) => T
-    /**
-     * 	Type describing a function with arbitrary arguments and result of the same defined type.
-     */
-    export type LinearMapperFn<T> = (...args: T[]) => T
-    /**
      * 	Type describing a function with arbitrary arguments of one type and a result of another type.
      */
-    export type MapperFn<R, A = any> = (...args: A[]) => R
+    export type MapFn<R, A = R> = (...args: A[]) => R
     /**
      * 	Type describing a function that runs asynchronously.
      */
-    export type AsyncFn<R = unknown, A = any> = (...args: A[]) => Promise<R>
+    export type AsyncFn<R = any> = (...args: any[]) => Promise<R>
     /**
      *  Type describing a function with no return value an no arguments.
      */
-    export type VoidFn<T = any> = (...args: any[]) => T
+    export type VoidFn = (...args: any[]) => void
     /**
      *  Type specifying the arguments of a function.
      */
@@ -424,7 +416,7 @@ declare module 'typestar' {
     /**
      *  A function that rejects a promise with a given reason.
      */
-    export type Rejector = (reason?: Error | PromiseLike<Error>) => void
+    export type Rejector = (reason?: string | Error | PromiseLike<Error>) => void
     /**
      *  General type of an ECMAScript Promise.
      *
