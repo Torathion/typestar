@@ -201,15 +201,15 @@ declare module 'typestar' {
     /**
      *  Type describing an arbitrary array holding numbers.
      */
-    export type NumArr = TypedArray | number[]
+    export type NumArray = TypedArray | number[]
     /**
      *  Type describing any argument that can be used to instantiate a TypedArray.
      */
-    export type TypedArrArgs = TypedArray | ArrayBuffer | MaybeArray<number>
+    export type TypedArrayArgs = TypedArray | ArrayBuffer | MaybeArray<number>
     /**
      *  Stricter type variant of `TypedArrayArgs` that forbids instantiating a new TypedArray from another kind, like `Uint8Array` -> `Float64Array`.
      */
-    export type StrictTypedArrArgs<T> = T | ArrayBuffer | MaybeArray<number>
+    export type StrictTypedArrayArgs<T> = T | ArrayBuffer | MaybeArray<number>
     /**
      *  Utility type that wraps other array types to include `readonly` arrays.
      */
@@ -217,7 +217,7 @@ declare module 'typestar' {
     /**
      *  Fixed TypedArray constructor supporting every argument without type errors caused by TypeScript's overload limitation.
      */
-    export type TypedArrConstructor<T extends TypedArr> = new (
+    export type TypedArrayConstructor<T extends TypedArr> = new (
         buffer?: ArrayBuffer | TypedArray | MaybeArray<number>,
         byteOffset?: number,
         length?: number
@@ -233,7 +233,7 @@ declare module 'typestar' {
     /**
      * 	Type describing the possibility of an value being an array or not.
      */
-    export type MaybeArr<T> = T | T[]
+    export type MaybeArray<T> = T | T[]
     /**
      *  Flattens an array type into its element type or leaves the type unchanged if it's not an array.
      */
@@ -242,30 +242,17 @@ declare module 'typestar' {
     /**
      *  Wraps a type in an array.
      */
-    export type AsArr<T> = T extends unknown ? T[] : never
+    export type AsArray<T> = T extends unknown ? T[] : never
     /**
      *  Ensures the type is wrapped as an array, preserving union behavior.
      */
-    export type AsJointArr<T> = [T] extends [unknown] ? T[] : never
-    /**
-     * Split<S, D>
-     * Splits a string `S` into substrings separated by `D`. This literal types the `string.split()` result.
-     */
-    export type Split<S extends string, D extends string> = S extends `${infer T}${D}${infer U}` ? [T, ...Split<U, D>] : [S]
-    /**
-     *  Combines two tuples `T1` and `T2` into a tuple of pairs.
-     */
-    export type Zip<T1 extends any[], T2 extends any[]> = T1 extends [infer H1, ...infer R1]
-        ? T2 extends [infer H2, ...infer R2]
-            ? [[H1, H2], ...Zip<R1, R2>]
-            : []
-        : []
+    export type AsJointArray<T> = [T] extends [unknown] ? T[] : never
     /*
      *			FUNCTION
      */
     /**
      *  Type describing an arbitrary function.
-     */ 
+     */
     export type Fn<T = any> = (...args: any[]) => T
     /**
      *  Type describing an argument that can easy be a static value or the result of a dynamically calculated function.
