@@ -7,9 +7,9 @@ declare module 'typestar' {
      */
     export type Primitive = string | number | boolean | bigint | symbol
     /**
-     * 	Type describing that the value can be any primitive read data type.
+     * 	Data types that can be a valid primitive JSON value.
      */
-    export type JSONPrimitive = string | number | boolean
+    export type JSONPrimitive = string | number | boolean | null
     /**
      *  Type describing the possibility of a value not being defined.
      */
@@ -17,7 +17,7 @@ declare module 'typestar' {
     /**
      * 	Type that combines the overarching concept of the JavaScript global object.
      */
-    export type GlobalObject = Window & typeof globalThis
+    export type Global = Window & typeof globalThis
     /*
      *			HELPER
      */
@@ -36,11 +36,11 @@ declare module 'typestar' {
     /**
      *  Converts the types of an array of elements to an intersection (&).
      */
-    export type ArrayToIntersect<T extends unknown[]> = IntersectUnion<T[number]>
+    export type Intersect<T extends unknown[]> = IntersectUnion<T[number]>
     /**
      *  Converts the types of an array of elements to an union (|).
      */
-    export type ArrayToUnion<T extends unknown[]> = T[number]
+    export type Union<T extends unknown[]> = T[number]
     /**
      *  Creates a union of a literal type (L) and a broader base type (B).
      *
@@ -77,10 +77,6 @@ declare module 'typestar' {
      *  Helper type describing a given object with given keys to be present.
      */
     export type Required<T, Keys extends keyof T = keyof T> = Partial<T> & { [K in Keys]-?: Pick<T, K> }[Keys]
-    /**
-     *  Converts a tuple type to a union of its element types.
-     */
-    export type TupleToUnion<T extends any[]> = T[number]
     /**
      *  Converts a union type to a tuple.
      */
@@ -142,7 +138,7 @@ declare module 'typestar' {
     /**
      * 	Type describing any type that can be used as an index key of an object.
      */
-    export type IndexKey = string | symbol | number
+    export type Index = string | symbol | number
     /**
      *  Helper type extracting all types of an interface as a union.
      */
@@ -265,7 +261,7 @@ declare module 'typestar' {
     /**
      * 	Type describing any typed array
      */
-    export type TypedArray =
+    export type TypedArr =
         | Int8Array
         | Int16Array
         | Int32Array
@@ -278,23 +274,23 @@ declare module 'typestar' {
     /**
      * 	Type describing any bigint typed array
      */
-    export type BigTypedArray = BigInt64Array | BigUint64Array
+    export type BigTypedAr = BigInt64Array | BigUint64Array
     /**
      *  Type describing any kind of array like structure for algorithms allowing any kind of array to be able to perform certain actions.
      */
-    export type AnyArray<T> = T[] | TypedArray | BigTypedArray
+    export type Arr<T> = T[] | TypedArray | BigTypedArray
     /**
      *  Type describing an arbitrary array holding numbers.
      */
-    export type AnyNumberArray = TypedArray | number[]
+    export type NumArr = TypedArray | number[]
     /**
      *  Type describing any argument that can be used to instantiate a TypedArray.
      */
-    export type TypedArrayArgs = TypedArray | ArrayBuffer | MaybeArray<number>
+    export type TypedArrArgs = TypedArray | ArrayBuffer | MaybeArray<number>
     /**
      *  Stricter type variant of `TypedArrayArgs` that forbids instantiating a new TypedArray from another kind, like `Uint8Array` -> `Float64Array`.
      */
-    export type StrictTypedArrayArgs<T> = T | ArrayBuffer | MaybeArray<number>
+    export type StrictTypedArrArgs<T> = T | ArrayBuffer | MaybeArray<number>
     /**
      *  Utility type that wraps other array types to include `readonly` arrays.
      */
@@ -302,7 +298,7 @@ declare module 'typestar' {
     /**
      *  Fixed TypedArray constructor supporting every argument without type errors caused by TypeScript's overload limitation.
      */
-    export type TypedArrayConstructor<T extends TypedArray> = new (
+    export type TypedArrConstructor<T extends TypedArr> = new (
         buffer?: ArrayBuffer | TypedArray | MaybeArray<number>,
         byteOffset?: number,
         length?: number
@@ -318,7 +314,7 @@ declare module 'typestar' {
     /**
      * 	Type describing the possibility of an value being an array or not.
      */
-    export type MaybeArray<T> = T | T[]
+    export type MaybeArr<T> = T | T[]
     /**
      *  Flattens an array type into its element type or leaves the type unchanged if it's not an array.
      */
@@ -327,11 +323,11 @@ declare module 'typestar' {
     /**
      *  Wraps a type in an array.
      */
-    export type AsArray<T> = T extends unknown ? T[] : never
+    export type AsArr<T> = T extends unknown ? T[] : never
     /**
      *  Ensures the type is wrapped as an array, preserving union behavior.
      */
-    export type AsJointArray<T> = [T] extends [unknown] ? T[] : never
+    export type AsJointArr<T> = [T] extends [unknown] ? T[] : never
     /**
      * Split<S, D>
      * Splits a string `S` into substrings separated by `D`. This literal types the `string.split()` result.
@@ -350,7 +346,7 @@ declare module 'typestar' {
      */
     /**
      *  Type describing an arbitrary function.
-     */
+     */ 
     export type Fn<T = any> = (...args: any[]) => T
     /**
      *  Type describing an argument that can easy be a static value or the result of a dynamically calculated function.
@@ -716,19 +712,15 @@ declare module 'typestar' {
     /**
      *  Represents a JSON object with string keys and values that are valid JSON types.
      */
-    export type JsonObject = { [Key in string]?: JsonValue }
+    export type JsonObj = { [Key in string]?: JsonValue }
     /**
      *  Represents a JSON array where each element is a valid JSON value.
      */
     export type JsonArray = JsonValue[]
     /**
-     *  Represents a JSON primitive value.
-     */
-    export type JsonPrimitive = string | number | boolean | null
-    /**
      *  Represents any valid JSON value.
      */
-    export type JsonValue = JsonPrimitive | JsonObject | JsonArray
+    export type JsonValue = JsonPrimitive | JsonObj | JsonArray
     /**
      *  Type describing the source type of a JavaScript project.
      */
