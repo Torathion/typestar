@@ -9,7 +9,7 @@ declare module 'typestar' {
     /**
      * 	Type describing that the value can be any primitive read data type.
      */
-    export type PrimitiveData = string | number | boolean
+    export type JSONPrimitive = string | number | boolean
     /**
      *  Type describing the possibility of a value not being defined.
      */
@@ -351,7 +351,7 @@ declare module 'typestar' {
     /**
      *  Type describing an arbitrary function.
      */
-    export type AnyFn = (...args: any[]) => any
+    export type Fn = (...args: any[]) => any
     /**
      *  Type describing an argument that can easy be a static value or the result of a dynamically calculated function.
      */

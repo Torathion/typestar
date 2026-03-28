@@ -1,6 +1,6 @@
 {
     "name": "typestar",
-    "version": "2.1.0",
+    "version": "3.0.0",
     "description": "Type library to reduce unreadable and long type definitions",
     "types": "index.d.ts",
     "keywords": [
