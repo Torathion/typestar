@@ -87,18 +87,6 @@ declare module 'typestar' {
     export type Invert<T extends Table<string | number>> = {
         [P in keyof T as `${T[P]}`]: P
     }
-    /**
-     *  Extracts the first element from a tuple type.
-     */
-    export type Head<T extends any[]> = T extends [infer H, ...any[]] ? H : never
-    /**
-     *  Removes the first element from a tuple type.
-     */
-    export type Tail<T extends any[]> = T extends [any, ...infer Rest] ? Rest : never
-    /**
-     *  Extracts the last element of a tuple type.
-     */
-    export type Last<T extends any[]> = T extends [...any[], infer L] ? L : never
 
     /**
      *  Creates a new type by excluding certain keys from the original type.
@@ -106,24 +94,6 @@ declare module 'typestar' {
     export type Without<T, Keys extends keyof T> = {
         [Prop in keyof T as Exclude<Prop, Keys>]: T[Prop]
     }
-    /**
-     *  Excludes index signatures (string and number keys) from a type.
-     *
-     *  @template T - The type to filter.
-     */
-    export type NotIndexable<T> = {
-        [P in keyof T as string extends P ? never : number extends P ? never : P]: T[P]
-    }
-    /**
-     *  A utility type to check if two types `X` and `Y` are exactly the same.
-     *  Returns `A` if the types are equal, and `B` if they are not.
-     *
-     *  @template X - The first type to compare.
-     *  @template Y - The second type to compare.
-     *  @template A - The type to return if `X` and `Y` are equal. Defaults to `X`.
-     *  @template B - The type to return if `X` and `Y` are not equal. Defaults to `never`.
-     */
-    export type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2 ? A : B
     /*
      *			OBJECTS
      */
@@ -191,57 +161,6 @@ declare module 'typestar' {
     export type Immutable<T> = {
         readonly [Prop in keyof T]: T[Prop]
     }
-    /**
-     *  Converts all properties of a type into boolean flags.
-     */
-    export type OptionFlags<T> = {
-        [Prop in keyof T]: boolean
-    }
-    /**
-     *  Generates getter methods for all properties of a type.
-     */
-    export type Getters<T> = {
-        [Prop in keyof T as `get${Capitalize<Prop & string>}`]: () => T[Prop]
-    }
-    /**
-     *  Generates setter methods for all properties of a type.
-     */
-    export type Setters<T> = {
-        [Prop in keyof T as `set${Capitalize<Prop & string>}`]: (value: T[Prop]) => void
-    }
-    /**
-     *  Extracts the keys of `T` that are optional.
-     */
-    export type OptionalKeys<T> = {
-        [K in keyof T]-?: {} extends Pick<T, K> ? K : never
-    }[keyof T]
-    /**
-     *  Extracts the keys of `T` that are required.
-     */
-    export type RequiredKeys<T> = {
-        [K in keyof T]-?: {} extends Pick<T, K> ? never : K
-    }[keyof T]
-    /**
-     * ReadonlyKeys<T>
-     * Extracts the readonly keys from an object type.
-     *
-     * Useful for differentiating mutable and immutable properties.
-     */
-    export type ReadonlyKeys<T> = {
-        [K in keyof T]: IfEquals<{ [P in K]: T[K] }, { -readonly [P in K]: T[K] }, never, K>
-    }[keyof T]
-    /**
-     * Extracts the mutable keys from an object type.
-     */
-    export type MutableKeys<T> = {
-        [K in keyof T]: IfEquals<{ [P in K]: T[K] }, { -readonly [P in K]: T[K] }, K, never>
-    }[keyof T]
-    /**
-     *  Extracts keys of `T` whose values match the type `V`.
-     */
-    export type KeysMatching<T, V> = {
-        [K in keyof T]: T[K] extends V ? K : never
-    }[keyof T]
     /**
      *  Helper type describing an object that can be safely converted to a JSON string.
      */
