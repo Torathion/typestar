@@ -26,7 +26,7 @@ declare module 'typestar' {
      *
      *  Helps avoid accidental key omissions.
      */
-    export type OmitStrict<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+    export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
     /**
      *  Converts a union (|) of types to an intersection (&).
      *
@@ -42,12 +42,6 @@ declare module 'typestar' {
      */
     export type Union<T extends unknown[]> = T[number]
     /**
-     *  Creates a union of a literal type (L) and a broader base type (B).
-     *
-     *  Useful for adding specific literal values to a generic type.
-     */
-    export type LiteralUnion<L, B> = L | (B & {})
-    /**
      *  Enforces that an object has exactly the keys defined in the type.
      *
      *  Useful for stricter API typings.
@@ -56,21 +50,21 @@ declare module 'typestar' {
         [K in Exclude<keyof any, keyof T>]?: never
     }
     /**
-     *  Picks keys from `T` whose values are of type `ValueType`.
+     *  Picks keys from `T` whose values are of type `V`.
      */
-    export type PickByValue<T, ValueType> = {
-        [P in keyof T as T[P] extends ValueType ? P : never]: T[P]
+    export type PickByValue<T, V> = {
+        [P in keyof T as T[P] extends V ? P : never]: T[P]
     }
     /**
-     *  Excludes keys from `T` whose values are of type `ValueType`.
+     *  Excludes keys from `T` whose values are of type `V`.
      */
-    export type ExcludeByValue<T, ValueType> = {
-        [P in keyof T as T[P] extends ValueType ? never : P]: T[P]
+    export type ExcludeByValue<T, V> = {
+        [P in keyof T as T[P] extends V ? never : P]: T[P]
     }
     /**
-     *  Converts all properties of `T` to their string representation.
+     *  Get a dictionary version of that object type.
      */
-    export type Stringified<T> = {
+    export type DictObj<T> = {
         [P in keyof T]: string
     }
     /**
@@ -78,21 +72,17 @@ declare module 'typestar' {
      */
     export type Required<T, Keys extends keyof T = keyof T> = Partial<T> & { [K in Keys]-?: Pick<T, K> }[Keys]
     /**
-     *  Converts a union type to a tuple.
-     */
-    export type UnionToTuple<U> = (U extends any ? (arg: U) => void : never) extends (arg: infer T) => void ? [...UnionToTuple<Exclude<U, T>>, T] : []
-    /**
      *  Swaps keys and values of an object type.
      */
-    export type Invert<T extends Table<string | number>> = {
+    export type Inverted<T extends Table<string | number>> = {
         [P in keyof T as `${T[P]}`]: P
     }
 
     /**
      *  Creates a new type by excluding certain keys from the original type.
      */
-    export type Without<T, Keys extends keyof T> = {
-        [Prop in keyof T as Exclude<Prop, Keys>]: T[Prop]
+    export type Without<T, K extends keyof T> = {
+        [P in keyof T as Exclude<P, K>]: T[P]
     }
     /*
      *			OBJECTS
@@ -112,25 +102,15 @@ declare module 'typestar' {
     /**
      *  Helper type extracting all types of an interface as a union.
      */
-    export type Values<T extends object> = T[keyof T]
+    export type Values<T extends Obj> = T[keyof T]
     /**
      * 	Type specifying an entry from `Object.property.entries`.
      */
-    export type Entry<T extends object> = [keyof T, Values<T>]
-    /**
-     * 	Type specifying all entries from `Object.property.entries`
-     */
-    export type Entries<T extends object> = Entry<T>[]
+    export type Entry<T extends Obj> = [keyof T, Values<T>]
     /**
      * 	Type describing a dictionary data structure like object.
      */
     export type Dict = Table<string>
-    /**
-     *   Helper type that cleans up a lot of object types.
-     */
-    export type Prettify<T> = {
-        [K in keyof T]: T[K]
-    }
     /**
      *  Helper type turning every prop of an object to be `Nullish`.
      */
@@ -140,7 +120,7 @@ declare module 'typestar' {
     /**
      * 	Type that marks every property, even deep ones, as partial.
      */
-    export type DeepPartial<T> = T extends any ? (T extends any[] ? T : T extends object ? { [P in keyof T]?: DeepPartial<T[P]> } : T) : never
+    export type DeepPartial<T> = T extends any ? (T extends any[] ? T : T extends Obj ? { [P in keyof T]?: DeepPartial<T[P]> } : T) : never
     /**
      *  Recursively makes all properties of an object type readonly.
      *
@@ -170,7 +150,7 @@ declare module 'typestar' {
     /**
      *  Helper type describing an object that can be safely converted to a JSON string.
      */
-    export type Jsonfyable<T> = T & { toJSON: (...args: any[]) => string }
+    export type JSONable<T> = T & { toJSON: (...args: any[]) => string }
     /**
      *  Helper type describing an object that can be safely stringified.
      */
@@ -186,7 +166,7 @@ declare module 'typestar' {
     /**
      * 	Type describing any typed array
      */
-    export type TypedArr =
+    export type TypedArray =
         | Int8Array
         | Int16Array
         | Int32Array
@@ -199,11 +179,11 @@ declare module 'typestar' {
     /**
      * 	Type describing any bigint typed array
      */
-    export type BigTypedAr = BigInt64Array | BigUint64Array
+    export type BigTypedArray = BigInt64Array | BigUint64Array
     /**
      *  Type describing any kind of array like structure for algorithms allowing any kind of array to be able to perform certain actions.
      */
-    export type Arr<T> = T[] | TypedArray | BigTypedArray
+    export type Arr<T = any> = T[] | TypedArray | BigTypedArray
     /**
      *  Type describing an arbitrary array holding numbers.
      */
@@ -240,19 +220,6 @@ declare module 'typestar' {
      * 	Type describing the possibility of an value being an array or not.
      */
     export type MaybeArray<T> = T | T[]
-    /**
-     *  Flattens an array type into its element type or leaves the type unchanged if it's not an array.
-     */
-    export type Flat<T> = T extends unknown[] ? T[number] : T
-
-    /**
-     *  Wraps a type in an array.
-     */
-    export type AsArray<T> = T extends unknown ? T[] : never
-    /**
-     *  Ensures the type is wrapped as an array, preserving union behavior.
-     */
-    export type AsJointArray<T> = [T] extends [unknown] ? T[] : never
     /*
      *			FUNCTION
      */
@@ -340,10 +307,10 @@ declare module 'typestar' {
     /**
      *  Represents a handler function for a resolved promise, returning a value or another promise.
      *
-     *  @template TValue - The type of the resolved value.
-     *  @template TResult - The type of the return value or the next promise in the chain.
+     *  @template V - The type of the resolved value.
+     *  @template R - The type of the return value or the next promise in the chain.
      */
-    export type OnResolved<TValue, TResult = TValue> = Nullish<(value: TValue) => TResult | PromiseLike<TResult>>
+    export type OnResolved<V, R = V> = Nullish<(value: V) => R | PromiseLike<R>>
     /**
      *  Represents a handler function for a rejected promise, returning a value or another promise.
      *
@@ -358,7 +325,7 @@ declare module 'typestar' {
      *
      *  @template T - The instance type of the class.
      */
-    export type Class<T> = { prototype: T } & T
+    export type Class<T = any> = { prototype: T } & T
     /**
      *  sRepresents a type that can be instantiated, such as a class or constructor function.
      *
@@ -379,35 +346,13 @@ declare module 'typestar' {
     /**
      * Represents a constructor of a specific Instantiable `T` with any arguments.
      */
-    export type Constructor<T> = new (...args: any[]) => T
+    export type Constructor<T = any> = new (...args: any[]) => T
     /**
      *  Represents a constructor for a specific class or type with specific arguments.
      *
      *  @template T - The class or type the constructor creates.
      */
     export type ClassConstructor<T, A extends any[] = any[]> = new (...args: A) => T
-    /**
-     *  Extracts the return type of a constructor of a class `T`.
-     */
-    export type ConstructorReturnType<T> = T extends new (...args: any[]) => infer C ? C : any
-    /**
-     *  Extracts names of methods and properties from a class prototype `T`.
-     */
-    export type PrototypeKey<T> = T extends { prototype: any } ? keyof T['prototype'] : never
-    /**
-     *  Excludes a set of reserved types or values from a given type.
-     *
-     *  The resulting type excludes any overlap between `TType` and `TReserved`.
-     *  This is useful for filtering out specific reserved values or types while retaining the rest of the base type.
-     *
-     *  @template TType - The base type from which reserved types will be excluded.
-     *  @template TReserved - The types or values to be excluded from `TType`.
-     *
-     *  This type works symmetrically to ensure that:
-     *  - If `TReserved` extends `TType`, it is excluded.
-     *  - If `TType` extends `TReserved`, it is excluded.
-     */
-    export type ExcludeReserved<TType, TReserved> = (TReserved extends TType ? never : TType) & (TType extends TReserved ? never : TType)
     /*
      *			WEB
      */
@@ -420,11 +365,6 @@ declare module 'typestar' {
      * Represents an attribute value for an SVG element, which can be a string, number, or null.
      */
     export type SVGAttr = null | number | string
-    /**
-     * Represents a dictionary of properties where keys are strings
-     * and values conform to the `ElementValue` type.
-     */
-    export type Props = Table<ElementValue>
     /**
      * Represents all valid SVG elements used for rendering.
      */
@@ -624,15 +564,15 @@ declare module 'typestar' {
     /**
      *  Represents a JSON object with string keys and values that are valid JSON types.
      */
-    export type JsonObj = { [Key in string]?: JsonValue }
+    export type JSONObj = { [Key in string]?: JsonValue }
     /**
      *  Represents a JSON array where each element is a valid JSON value.
      */
-    export type JsonArray = JsonValue[]
+    export type JSONArray = JsonValue[]
     /**
      *  Represents any valid JSON value.
      */
-    export type JsonValue = JsonPrimitive | JsonObj | JsonArray
+    export type JSONValue = JsonPrimitive | JsonObj | JsonArray
     /**
      *  Type describing the source type of a JavaScript project.
      */
@@ -811,96 +751,5 @@ declare module 'typestar' {
         os?: string[]
         /** A list of CPU architectures supported by the package. */
         cpu?: string[]
-    }
-    /**
-     *  Extensions to the Node.js `process` object in Electron.
-     *  This interface only includes additional properties specific to Electron's main and renderer processes.
-     */
-    export interface ElectronProcess {
-        /**
-         *  When the app is started by being passed as a parameter to the default Electron executable,
-         *  this property is `true` in the main process, otherwise it is `undefined`.
-         */
-        defaultApp?: boolean
-        /**
-         *  A `boolean`, `true` when the current renderer context is the "main" renderer frame.
-         *  If you want the ID of the current frame, use `webFrame.routingId`.
-         */
-        isMainFrame?: boolean
-        /**
-         *  For Mac App Store build, this property is `true`, for other builds it is `undefined`.
-         */
-        mas?: boolean
-        /**
-         *  A `boolean` that controls ASAR support inside your application.
-         *  Setting this to `true` will disable the support for `asar` archives in Node's built-in modules.
-         */
-        noAsar?: boolean
-        /**
-         *  A `boolean` that controls whether deprecation warnings are printed to `stderr`.
-         *  Setting this to `true` will silence deprecation warnings.
-         */
-        noDeprecation?: boolean
-        /**
-         * A `string` representing the path to the resources directory.
-         */
-        resourcesPath?: string
-        /**
-         *  When the renderer process is sandboxed, this property is `true`, otherwise it is `undefined`.
-         */
-        sandboxed?: boolean
-        /**
-         *  A `boolean` that indicates whether the current renderer context has `contextIsolation` enabled.
-         *  It is `undefined` in the main process.
-         */
-        contextIsolated?: boolean
-        /**
-         *  A `boolean` that controls whether deprecation warnings will be thrown as exceptions.
-         *  Setting this to `true` will throw errors for deprecations.
-         */
-        throwDeprecation?: boolean
-        /**
-         *  A `boolean` that controls whether deprecations printed to `stderr` include their stack trace.
-         *  Setting this to `true` will print stack traces for deprecations.
-         */
-        traceDeprecation?: boolean
-        /**
-         *  A `boolean` that controls whether process warnings printed to `stderr` include their stack trace.
-         *  Setting this to `true` will print stack traces for process warnings (including deprecations).
-         */
-        traceProcessWarnings?: boolean
-        /**
-         *  A `string` representing the current process's type. Possible values:
-         *  - `browser` - The main process
-         *  - `renderer` - A renderer process
-         *  - `worker` - In a web worker
-         *  - `utility` - In a node process launched as a service
-         */
-        type?: 'browser' | 'renderer' | 'worker' | 'utility'
-        /**
-         *  An object containing version strings for Electron and Chrome.
-         */
-        versions: {
-            /**
-             *  A `string` representing Chrome's version string.
-             */
-            chrome: string
-            /**
-             *  A `string` representing Electron's version string.
-             */
-            electron: string
-        }
-        /**
-         *  If the app is running as a Windows Store app (appx), this property is `true`,
-         *  otherwise it is `undefined`.
-         */
-        windowsStore?: boolean
-        /**
-         *  A `string` (optional) representing a globally unique ID of the current JavaScript context.
-         *  Each frame has its own JavaScript context. When contextIsolation is enabled, the isolated
-         *  world also has a separate JavaScript context.
-         *  This property is only available in the renderer process.
-         */
-        contextId?: string
     }
 }
