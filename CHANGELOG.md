@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.1] 29-03-2026
+
+- Move type reference list from `README.md` to `docs/types.md` to reduce download size.
+
 ## [3.0.0] 28-03-2026
 
 Dev Note: I've been using `typestar` for quite some time now in larger scale projects and decided to cleanup everything I learned to dislike about my types.
