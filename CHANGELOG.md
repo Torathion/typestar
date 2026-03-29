@@ -1,8 +1,82 @@
 # Changelog
 
+## [3.0.0] 28-03-2026
+
+Dev Note: I've been using `typestar` for quite some time now in larger scale projects and decided to cleanup everything I learned to dislike about my types.
+
+### :boom: BREAKING
+
+#### Renames
+
+-   `AnyArray`-> `Arr`
+-   `AnyFn` -> `Fn`
+-   `AnyNumberArray` -> `NumArray`
+-   `ArrayToIntersect` -> `Intersect`
+-   `ArrayToUnion` -> `Union`
+-   `GlobalObject` -> `Global`
+-   `IndexKey` -> `Index`
+-   `Invert` -> `Inverted`
+-   `Jsonfyable` -> `JSONable`
+-   `JsonObject` -> `JSONObj`
+-   `JsonArray` -> `JSONArray`
+-   `JsonValue` -> `JSONValue`
+-   `LinearMapperFn<T>` -> `MapFn<T, T>`
+-   `MapperFn<T, U>` -> `MapFn<T, U>`
+-   `OmitStrict` -> `Omit`  (manually import it like a patch to `Omit`)
+-   `Stringified<T>` -> `DictObj<T>`
+-   `TypedFn<T>` -> `Fn<T>`
+
+#### Removed
+
+-   `Entries` for `Entry<T>[]`
+-   `PrimitiveData` for `JSONPrimitive`
+-   `TupleToUnion` for `Union`
+-   `ElectronProcess` since I migrated my affect projects to Tauri
+
+#### Removed for being never used (might be re-added in the future)
+
+-   `AsArray`
+-   `AsJointArray`
+-   `ConstructorReturnType`
+-   `ExcludeReserved`
+-   `Flat`
+-   `Getters`
+-   `Head`
+-   `IfEquals`
+-   `KeysMatching`
+-   `Last`
+-   `LiteralUnion`
+-   `MutableKeys`
+-   `NotIndexable`
+-   `OptionalKeys`
+-   `OptionFlags`
+-   `Prettify`
+-   `Props`
+-   `PrototypeKey`
+-   `ReadonlyKeys`
+-   `RequiredKeys`
+-   `Setters`
+-   `Split`
+-   `Tail`
+-   `UnionToTuple`
+-   `Zip`
+
+#### Restricting Changes
+
+-   `VoidFn` doesn't allow any generics anymore (migrate to `Fn<T>`).
+-   `AsyncFn` doesn't allow any argument typings anymore (gets too complicate to use if you use more than one argument)
+
+### :stars: Added
+
+-   `Nullable<Obj>` type to turn every type `Nullish<Obj>`
+
+### :bug: Fixed
+
+-   `Rejector` also allows to reject with `string`
+
 ## [2.1.0] 06-10-2025
 
-### Added
+### :stars: Added
 
 -   Inverted change of removing `AnyObject`, now featuring a more configurable version called `Obj`
 
