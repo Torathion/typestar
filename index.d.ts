@@ -7,9 +7,9 @@ declare module 'typestar' {
      */
     export type Primitive = string | number | boolean | bigint | symbol
     /**
-     * 	Type describing that the value can be any primitive read data type.
+     * 	Data types that can be a valid primitive JSON value.
      */
-    export type PrimitiveData = string | number | boolean
+    export type JSONPrimitive = string | number | boolean | null
     /**
      *  Type describing the possibility of a value not being defined.
      */
@@ -17,7 +17,7 @@ declare module 'typestar' {
     /**
      * 	Type that combines the overarching concept of the JavaScript global object.
      */
-    export type GlobalObject = Window & typeof globalThis
+    export type Global = Window & typeof globalThis
     /*
      *			HELPER
      */
@@ -26,7 +26,7 @@ declare module 'typestar' {
      *
      *  Helps avoid accidental key omissions.
      */
-    export type OmitStrict<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+    export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
     /**
      *  Converts a union (|) of types to an intersection (&).
      *
@@ -36,17 +36,11 @@ declare module 'typestar' {
     /**
      *  Converts the types of an array of elements to an intersection (&).
      */
-    export type ArrayToIntersect<T extends unknown[]> = IntersectUnion<T[number]>
+    export type Intersect<T extends unknown[]> = IntersectUnion<T[number]>
     /**
      *  Converts the types of an array of elements to an union (|).
      */
-    export type ArrayToUnion<T extends unknown[]> = T[number]
-    /**
-     *  Creates a union of a literal type (L) and a broader base type (B).
-     *
-     *  Useful for adding specific literal values to a generic type.
-     */
-    export type LiteralUnion<L, B> = L | (B & {})
+    export type Union<T extends unknown[]> = T[number]
     /**
      *  Enforces that an object has exactly the keys defined in the type.
      *
@@ -56,21 +50,21 @@ declare module 'typestar' {
         [K in Exclude<keyof any, keyof T>]?: never
     }
     /**
-     *  Picks keys from `T` whose values are of type `ValueType`.
+     *  Picks keys from `T` whose values are of type `V`.
      */
-    export type PickByValue<T, ValueType> = {
-        [P in keyof T as T[P] extends ValueType ? P : never]: T[P]
+    export type PickByValue<T, V> = {
+        [P in keyof T as T[P] extends V ? P : never]: T[P]
     }
     /**
-     *  Excludes keys from `T` whose values are of type `ValueType`.
+     *  Excludes keys from `T` whose values are of type `V`.
      */
-    export type ExcludeByValue<T, ValueType> = {
-        [P in keyof T as T[P] extends ValueType ? never : P]: T[P]
+    export type ExcludeByValue<T, V> = {
+        [P in keyof T as T[P] extends V ? never : P]: T[P]
     }
     /**
-     *  Converts all properties of `T` to their string representation.
+     *  Get a dictionary version of that object type.
      */
-    export type Stringified<T> = {
+    export type DictObj<T> = {
         [P in keyof T]: string
     }
     /**
@@ -78,56 +72,18 @@ declare module 'typestar' {
      */
     export type Required<T, Keys extends keyof T = keyof T> = Partial<T> & { [K in Keys]-?: Pick<T, K> }[Keys]
     /**
-     *  Converts a tuple type to a union of its element types.
-     */
-    export type TupleToUnion<T extends any[]> = T[number]
-    /**
-     *  Converts a union type to a tuple.
-     */
-    export type UnionToTuple<U> = (U extends any ? (arg: U) => void : never) extends (arg: infer T) => void ? [...UnionToTuple<Exclude<U, T>>, T] : []
-    /**
      *  Swaps keys and values of an object type.
      */
-    export type Invert<T extends Table<string | number>> = {
+    export type Inverted<T extends Table<string | number>> = {
         [P in keyof T as `${T[P]}`]: P
     }
-    /**
-     *  Extracts the first element from a tuple type.
-     */
-    export type Head<T extends any[]> = T extends [infer H, ...any[]] ? H : never
-    /**
-     *  Removes the first element from a tuple type.
-     */
-    export type Tail<T extends any[]> = T extends [any, ...infer Rest] ? Rest : never
-    /**
-     *  Extracts the last element of a tuple type.
-     */
-    export type Last<T extends any[]> = T extends [...any[], infer L] ? L : never
 
     /**
      *  Creates a new type by excluding certain keys from the original type.
      */
-    export type Without<T, Keys extends keyof T> = {
-        [Prop in keyof T as Exclude<Prop, Keys>]: T[Prop]
+    export type Without<T, K extends keyof T> = {
+        [P in keyof T as Exclude<P, K>]: T[P]
     }
-    /**
-     *  Excludes index signatures (string and number keys) from a type.
-     *
-     *  @template T - The type to filter.
-     */
-    export type NotIndexable<T> = {
-        [P in keyof T as string extends P ? never : number extends P ? never : P]: T[P]
-    }
-    /**
-     *  A utility type to check if two types `X` and `Y` are exactly the same.
-     *  Returns `A` if the types are equal, and `B` if they are not.
-     *
-     *  @template X - The first type to compare.
-     *  @template Y - The second type to compare.
-     *  @template A - The type to return if `X` and `Y` are equal. Defaults to `X`.
-     *  @template B - The type to return if `X` and `Y` are not equal. Defaults to `never`.
-     */
-    export type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2 ? A : B
     /*
      *			OBJECTS
      */
@@ -142,33 +98,29 @@ declare module 'typestar' {
     /**
      * 	Type describing any type that can be used as an index key of an object.
      */
-    export type IndexKey = string | symbol | number
+    export type Index = string | symbol | number
     /**
      *  Helper type extracting all types of an interface as a union.
      */
-    export type Values<T extends object> = T[keyof T]
+    export type Values<T extends Obj> = T[keyof T]
     /**
      * 	Type specifying an entry from `Object.property.entries`.
      */
-    export type Entry<T extends object> = [keyof T, Values<T>]
-    /**
-     * 	Type specifying all entries from `Object.property.entries`
-     */
-    export type Entries<T extends object> = Entry<T>[]
+    export type Entry<T extends Obj> = [keyof T, Values<T>]
     /**
      * 	Type describing a dictionary data structure like object.
      */
     export type Dict = Table<string>
     /**
-     *   Helper type that cleans up a lot of object types.
+     *  Helper type turning every prop of an object to be `Nullish`.
      */
-    export type Prettify<T> = {
-        [K in keyof T]: T[K]
+    export type Nullable<T extends Obj> = {
+        [K in keyof T]: Nullish<T[K]>
     }
     /**
      * 	Type that marks every property, even deep ones, as partial.
      */
-    export type DeepPartial<T> = T extends any ? (T extends any[] ? T : T extends object ? { [P in keyof T]?: DeepPartial<T[P]> } : T) : never
+    export type DeepPartial<T> = T extends any ? (T extends any[] ? T : T extends Obj ? { [P in keyof T]?: DeepPartial<T[P]> } : T) : never
     /**
      *  Recursively makes all properties of an object type readonly.
      *
@@ -196,60 +148,9 @@ declare module 'typestar' {
         readonly [Prop in keyof T]: T[Prop]
     }
     /**
-     *  Converts all properties of a type into boolean flags.
-     */
-    export type OptionFlags<T> = {
-        [Prop in keyof T]: boolean
-    }
-    /**
-     *  Generates getter methods for all properties of a type.
-     */
-    export type Getters<T> = {
-        [Prop in keyof T as `get${Capitalize<Prop & string>}`]: () => T[Prop]
-    }
-    /**
-     *  Generates setter methods for all properties of a type.
-     */
-    export type Setters<T> = {
-        [Prop in keyof T as `set${Capitalize<Prop & string>}`]: (value: T[Prop]) => void
-    }
-    /**
-     *  Extracts the keys of `T` that are optional.
-     */
-    export type OptionalKeys<T> = {
-        [K in keyof T]-?: {} extends Pick<T, K> ? K : never
-    }[keyof T]
-    /**
-     *  Extracts the keys of `T` that are required.
-     */
-    export type RequiredKeys<T> = {
-        [K in keyof T]-?: {} extends Pick<T, K> ? never : K
-    }[keyof T]
-    /**
-     * ReadonlyKeys<T>
-     * Extracts the readonly keys from an object type.
-     *
-     * Useful for differentiating mutable and immutable properties.
-     */
-    export type ReadonlyKeys<T> = {
-        [K in keyof T]: IfEquals<{ [P in K]: T[K] }, { -readonly [P in K]: T[K] }, never, K>
-    }[keyof T]
-    /**
-     * Extracts the mutable keys from an object type.
-     */
-    export type MutableKeys<T> = {
-        [K in keyof T]: IfEquals<{ [P in K]: T[K] }, { -readonly [P in K]: T[K] }, K, never>
-    }[keyof T]
-    /**
-     *  Extracts keys of `T` whose values match the type `V`.
-     */
-    export type KeysMatching<T, V> = {
-        [K in keyof T]: T[K] extends V ? K : never
-    }[keyof T]
-    /**
      *  Helper type describing an object that can be safely converted to a JSON string.
      */
-    export type Jsonfyable<T> = T & { toJSON: (...args: any[]) => string }
+    export type JSONable<T> = T & { toJSON: (...args: any[]) => string }
     /**
      *  Helper type describing an object that can be safely stringified.
      */
@@ -282,11 +183,11 @@ declare module 'typestar' {
     /**
      *  Type describing any kind of array like structure for algorithms allowing any kind of array to be able to perform certain actions.
      */
-    export type AnyArray<T> = T[] | TypedArray | BigTypedArray
+    export type Arr<T = any> = T[] | TypedArray | BigTypedArray
     /**
      *  Type describing an arbitrary array holding numbers.
      */
-    export type AnyNumberArray = TypedArray | number[]
+    export type NumArray = TypedArray | number[]
     /**
      *  Type describing any argument that can be used to instantiate a TypedArray.
      */
@@ -302,7 +203,7 @@ declare module 'typestar' {
     /**
      *  Fixed TypedArray constructor supporting every argument without type errors caused by TypeScript's overload limitation.
      */
-    export type TypedArrayConstructor<T extends TypedArray> = new (
+    export type TypedArrayConstructor<T extends TypedArr> = new (
         buffer?: ArrayBuffer | TypedArray | MaybeArray<number>,
         byteOffset?: number,
         length?: number
@@ -319,63 +220,29 @@ declare module 'typestar' {
      * 	Type describing the possibility of an value being an array or not.
      */
     export type MaybeArray<T> = T | T[]
-    /**
-     *  Flattens an array type into its element type or leaves the type unchanged if it's not an array.
-     */
-    export type Flat<T> = T extends unknown[] ? T[number] : T
-
-    /**
-     *  Wraps a type in an array.
-     */
-    export type AsArray<T> = T extends unknown ? T[] : never
-    /**
-     *  Ensures the type is wrapped as an array, preserving union behavior.
-     */
-    export type AsJointArray<T> = [T] extends [unknown] ? T[] : never
-    /**
-     * Split<S, D>
-     * Splits a string `S` into substrings separated by `D`. This literal types the `string.split()` result.
-     */
-    export type Split<S extends string, D extends string> = S extends `${infer T}${D}${infer U}` ? [T, ...Split<U, D>] : [S]
-    /**
-     *  Combines two tuples `T1` and `T2` into a tuple of pairs.
-     */
-    export type Zip<T1 extends any[], T2 extends any[]> = T1 extends [infer H1, ...infer R1]
-        ? T2 extends [infer H2, ...infer R2]
-            ? [[H1, H2], ...Zip<R1, R2>]
-            : []
-        : []
     /*
      *			FUNCTION
      */
     /**
      *  Type describing an arbitrary function.
      */
-    export type AnyFn = (...args: any[]) => any
+    export type Fn<T = any> = (...args: any[]) => T
     /**
      *  Type describing an argument that can easy be a static value or the result of a dynamically calculated function.
      */
     export type MaybeFn<T> = T | (() => T)
     /**
-     *  Type describing a function with arbitrary arguments but with a defined result type.
-     */
-    export type TypedFn<T> = (...args: any[]) => T
-    /**
-     * 	Type describing a function with arbitrary arguments and result of the same defined type.
-     */
-    export type LinearMapperFn<T> = (...args: T[]) => T
-    /**
      * 	Type describing a function with arbitrary arguments of one type and a result of another type.
      */
-    export type MapperFn<R, A = any> = (...args: A[]) => R
+    export type MapFn<R, A = R> = (...args: A[]) => R
     /**
      * 	Type describing a function that runs asynchronously.
      */
-    export type AsyncFn<R = unknown, A = any> = (...args: A[]) => Promise<R>
+    export type AsyncFn<R = any> = (...args: any[]) => Promise<R>
     /**
      *  Type describing a function with no return value an no arguments.
      */
-    export type VoidFn<T = any> = (...args: any[]) => T
+    export type VoidFn = (...args: any[]) => void
     /**
      *  Type specifying the arguments of a function.
      */
@@ -424,7 +291,7 @@ declare module 'typestar' {
     /**
      *  A function that rejects a promise with a given reason.
      */
-    export type Rejector = (reason?: Error | PromiseLike<Error>) => void
+    export type Rejector = (reason?: string | Error | PromiseLike<Error>) => void
     /**
      *  General type of an ECMAScript Promise.
      *
@@ -440,10 +307,10 @@ declare module 'typestar' {
     /**
      *  Represents a handler function for a resolved promise, returning a value or another promise.
      *
-     *  @template TValue - The type of the resolved value.
-     *  @template TResult - The type of the return value or the next promise in the chain.
+     *  @template V - The type of the resolved value.
+     *  @template R - The type of the return value or the next promise in the chain.
      */
-    export type OnResolved<TValue, TResult = TValue> = Nullish<(value: TValue) => TResult | PromiseLike<TResult>>
+    export type OnResolved<V, R = V> = Nullish<(value: V) => R | PromiseLike<R>>
     /**
      *  Represents a handler function for a rejected promise, returning a value or another promise.
      *
@@ -458,7 +325,7 @@ declare module 'typestar' {
      *
      *  @template T - The instance type of the class.
      */
-    export type Class<T> = { prototype: T } & T
+    export type Class<T = any> = { prototype: T } & T
     /**
      *  sRepresents a type that can be instantiated, such as a class or constructor function.
      *
@@ -479,35 +346,13 @@ declare module 'typestar' {
     /**
      * Represents a constructor of a specific Instantiable `T` with any arguments.
      */
-    export type Constructor<T> = new (...args: any[]) => T
+    export type Constructor<T = any> = new (...args: any[]) => T
     /**
      *  Represents a constructor for a specific class or type with specific arguments.
      *
      *  @template T - The class or type the constructor creates.
      */
     export type ClassConstructor<T, A extends any[] = any[]> = new (...args: A) => T
-    /**
-     *  Extracts the return type of a constructor of a class `T`.
-     */
-    export type ConstructorReturnType<T> = T extends new (...args: any[]) => infer C ? C : any
-    /**
-     *  Extracts names of methods and properties from a class prototype `T`.
-     */
-    export type PrototypeKey<T> = T extends { prototype: any } ? keyof T['prototype'] : never
-    /**
-     *  Excludes a set of reserved types or values from a given type.
-     *
-     *  The resulting type excludes any overlap between `TType` and `TReserved`.
-     *  This is useful for filtering out specific reserved values or types while retaining the rest of the base type.
-     *
-     *  @template TType - The base type from which reserved types will be excluded.
-     *  @template TReserved - The types or values to be excluded from `TType`.
-     *
-     *  This type works symmetrically to ensure that:
-     *  - If `TReserved` extends `TType`, it is excluded.
-     *  - If `TType` extends `TReserved`, it is excluded.
-     */
-    export type ExcludeReserved<TType, TReserved> = (TReserved extends TType ? never : TType) & (TType extends TReserved ? never : TType)
     /*
      *			WEB
      */
@@ -520,11 +365,6 @@ declare module 'typestar' {
      * Represents an attribute value for an SVG element, which can be a string, number, or null.
      */
     export type SVGAttr = null | number | string
-    /**
-     * Represents a dictionary of properties where keys are strings
-     * and values conform to the `ElementValue` type.
-     */
-    export type Props = Table<ElementValue>
     /**
      * Represents all valid SVG elements used for rendering.
      */
@@ -724,19 +564,15 @@ declare module 'typestar' {
     /**
      *  Represents a JSON object with string keys and values that are valid JSON types.
      */
-    export type JsonObject = { [Key in string]?: JsonValue }
+    export type JSONObj = { [Key in string]?: JsonValue }
     /**
      *  Represents a JSON array where each element is a valid JSON value.
      */
-    export type JsonArray = JsonValue[]
-    /**
-     *  Represents a JSON primitive value.
-     */
-    export type JsonPrimitive = string | number | boolean | null
+    export type JSONArray = JsonValue[]
     /**
      *  Represents any valid JSON value.
      */
-    export type JsonValue = JsonPrimitive | JsonObject | JsonArray
+    export type JSONValue = JsonPrimitive | JsonObj | JsonArray
     /**
      *  Type describing the source type of a JavaScript project.
      */
@@ -915,96 +751,5 @@ declare module 'typestar' {
         os?: string[]
         /** A list of CPU architectures supported by the package. */
         cpu?: string[]
-    }
-    /**
-     *  Extensions to the Node.js `process` object in Electron.
-     *  This interface only includes additional properties specific to Electron's main and renderer processes.
-     */
-    export interface ElectronProcess {
-        /**
-         *  When the app is started by being passed as a parameter to the default Electron executable,
-         *  this property is `true` in the main process, otherwise it is `undefined`.
-         */
-        defaultApp?: boolean
-        /**
-         *  A `boolean`, `true` when the current renderer context is the "main" renderer frame.
-         *  If you want the ID of the current frame, use `webFrame.routingId`.
-         */
-        isMainFrame?: boolean
-        /**
-         *  For Mac App Store build, this property is `true`, for other builds it is `undefined`.
-         */
-        mas?: boolean
-        /**
-         *  A `boolean` that controls ASAR support inside your application.
-         *  Setting this to `true` will disable the support for `asar` archives in Node's built-in modules.
-         */
-        noAsar?: boolean
-        /**
-         *  A `boolean` that controls whether deprecation warnings are printed to `stderr`.
-         *  Setting this to `true` will silence deprecation warnings.
-         */
-        noDeprecation?: boolean
-        /**
-         * A `string` representing the path to the resources directory.
-         */
-        resourcesPath?: string
-        /**
-         *  When the renderer process is sandboxed, this property is `true`, otherwise it is `undefined`.
-         */
-        sandboxed?: boolean
-        /**
-         *  A `boolean` that indicates whether the current renderer context has `contextIsolation` enabled.
-         *  It is `undefined` in the main process.
-         */
-        contextIsolated?: boolean
-        /**
-         *  A `boolean` that controls whether deprecation warnings will be thrown as exceptions.
-         *  Setting this to `true` will throw errors for deprecations.
-         */
-        throwDeprecation?: boolean
-        /**
-         *  A `boolean` that controls whether deprecations printed to `stderr` include their stack trace.
-         *  Setting this to `true` will print stack traces for deprecations.
-         */
-        traceDeprecation?: boolean
-        /**
-         *  A `boolean` that controls whether process warnings printed to `stderr` include their stack trace.
-         *  Setting this to `true` will print stack traces for process warnings (including deprecations).
-         */
-        traceProcessWarnings?: boolean
-        /**
-         *  A `string` representing the current process's type. Possible values:
-         *  - `browser` - The main process
-         *  - `renderer` - A renderer process
-         *  - `worker` - In a web worker
-         *  - `utility` - In a node process launched as a service
-         */
-        type?: 'browser' | 'renderer' | 'worker' | 'utility'
-        /**
-         *  An object containing version strings for Electron and Chrome.
-         */
-        versions: {
-            /**
-             *  A `string` representing Chrome's version string.
-             */
-            chrome: string
-            /**
-             *  A `string` representing Electron's version string.
-             */
-            electron: string
-        }
-        /**
-         *  If the app is running as a Windows Store app (appx), this property is `true`,
-         *  otherwise it is `undefined`.
-         */
-        windowsStore?: boolean
-        /**
-         *  A `string` (optional) representing a globally unique ID of the current JavaScript context.
-         *  Each frame has its own JavaScript context. When contextIsolation is enabled, the isolated
-         *  world also has a separate JavaScript context.
-         *  This property is only available in the renderer process.
-         */
-        contextId?: string
     }
 }
